@@ -3,6 +3,9 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import "./CourtView.css";
 
 const CourtView = ({ activePlayers, courtLocked, rotatePlayers }) => {
+  // ✅ Identify the server (Position 1 in the back row)
+  const server = activePlayers.length >= 6 ? activePlayers[5] : null;
+
   return (
     <div className="court-container">
       <h3>Volleyball Court</h3>
@@ -28,7 +31,7 @@ const CourtView = ({ activePlayers, courtLocked, rotatePlayers }) => {
                       >
                         {(provided) => (
                           <div
-                            className="player-box"
+                            className={`player-box ${server && server.id === activePlayers[index].id ? "server" : ""}`}
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
@@ -55,7 +58,7 @@ const CourtView = ({ activePlayers, courtLocked, rotatePlayers }) => {
                       >
                         {(provided) => (
                           <div
-                            className="player-box"
+                            className={`player-box ${server && server.id === activePlayers[index + 3].id ? "server" : ""}`}
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
@@ -81,4 +84,5 @@ const CourtView = ({ activePlayers, courtLocked, rotatePlayers }) => {
 };
 
 export default CourtView;
+
 
