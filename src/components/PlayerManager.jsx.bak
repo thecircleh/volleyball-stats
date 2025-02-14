@@ -1,90 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-const PlayerManager = ({ players, setPlayers }) => {
+const PlayerManager = ({ players, setPlayers, updateActivePlayers }) => {
   const [newPlayerName, setNewPlayerName] = useState("");
-  const [selectedSubOut, setSelectedSubOut] = useState("");
+  const [subPrompt, setSubPrompt] = useState(null);
 
-  const toggleActiveStatus = (playerId) => {
-  setPlayers(prev =>
-    prev.map(p =>
-      p.id === playerId ? { ...p, active: !p.active } : p
-    )
-  );
-  setTimeout(updateActivePlayers, 50); // ✅ Ensure update happens after state change
-};
+  const addPlayer = () => {
+    if (newPlayerName.trim() === "") return;
 
+    setPlayers(prev => [
+      ...prev,
+      { id: Date.now(), name: newPlayerName, active: false } // ✅ Guarantees unique IDs
+    ]);
 
-    if (player.active) {
-      // If player is active, deactivate them
-      setPlayers(prevPlayers => prevPlayers.map(p => p.id === playerId ? { ...p, active: false } : p));
-    } else {
-      if (activeCount < 6) {
-        // If less than 6 players are active, just activate the player
-        setPlayers(prevPlayers => prevPlayers.map(p => p.id === playerId ? { ...p, active: true } : p));
-      } else {
-        // More than 6 players? Ask who to sub out
-        const subOut = window.prompt(
-          `You already have 6 active players. Who should be subbed out?\n${players
-            .filter(p => p.active)
-            .map(p => `- ${p.name}`)
-            .join("\n")}`
-        );
+    setNewPlayerName(""); // ✅ Clears input after adding player
+  };
 
-        if (subOut) {
-          const subOutPlayer = players.find(p => p.name === subOut.trim());
-          if (subOutPlayer) {
-            setPlayers(prevPlayers =>
-              prevPlayers.map(p =>
-                p.id === subOutPlayer.id ? { ...p, active: false } :
-                p.id === playerId ? { ...p, active: true } : p
-              )
-            );
-          } else {
-            alert("Invalid player name. No changes made.");
-          }
-        }
+  const toggleActiveStatus = (clickedPlayerId) => {
+    setPlayers(prevPlayers => {
+      const updatedPlayers = prevPlayers.map(player =>
+        player.id === clickedPlayerId ? { ...player, active: !player.active } : player
+      );
+
+      // ✅ Ensure no more than 6 active players
+      if (updatedPlayers.filter(player => player.active).length > 6) {
+        setSubPrompt(clickedPlayerId);
+        return prevPlayers; // Prevent exceeding 6 active players
       }
-    }
+
+      return updatedPlayers;
+    });
+
+    setTimeout(updateActivePlayers, 0); // ✅ Ensures immediate update
   };
 
   return (
     <div>
       <h3>Manage Players</h3>
       <ul>
-        {players.map((player) => (
+        {players.map(player => (
           <li key={player.id}>
-            <input
-              type="text"
-              value={player.name}
-              onChange={(e) => setPlayers(prev => prev.map(p => p.id === player.id ? { ...p, name: e.target.value } : p))}
-            />
+            {player.name}
             <button onClick={() => toggleActiveStatus(player.id)}>
               {player.active ? "Deactivate" : "Activate"}
+            </button>
+            <button onClick={() => setPlayers(prev => prev.filter(p => p.id !== player.id))}>
+              Remove
             </button>
           </li>
         ))}
       </ul>
 
-      <div>
-        <h4>Add New Player</h4>
-        <input
-          type="text"
-          placeholder="Enter player name"
-          value={newPlayerName}
-          onChange={(e) => setNewPlayerName(e.target.value)}
-        />
-        <button onClick={() => {
-          if (newPlayerName.trim()) {
-            setPlayers(prevPlayers => [
-              ...prevPlayers,
-              { id: prevPlayers.length + 1, name: newPlayerName, active: false }
-            ]);
-            setNewPlayerName("");
-          }
-        }}>
-          Add Player
-        </button>
-      </div>
+      <input
+        type="text"
+        placeholder="New Player Name"
+        value={newPlayerName}
+        onChange={(e) => setNewPlayerName(e.target.value)}
+      />
+      <button onClick={addPlayer}>Add Player</button>
     </div>
   );
 };

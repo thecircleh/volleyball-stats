@@ -50,27 +50,101 @@
   color: red;
   font-weight: bold;
 }
-.volleyball {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  font-size: 20px;
-  cursor: grab;
-}
+
+
 
 .touched {
   background-color: orange !important;
 }
 
+
+.court-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.court-layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0px;
+  position: relative;
+}
+
+.volleyball-container {
+  position: absolute;
+  left: 10%;
+  top: -30%;  /* Center the ball */
+}
+
+.volleyball-default {
+  position: absolute;
+  left: 10%;
+  top: -30%;  /* Center the ball */
+  }
+
+.volleyball-in-play-zone {
+  top: -70px; /* Ball in play zone */
+}
+
+.volleyball-kill-zone {
+  top: 0px;
+  right:30px; /* Ball in kill zone */
+}
+
+.volleyball-error {
+  left: 10px; /* Ball in error zone */
+  top: 300px;
+}
+
+.volleyball-server {
+  top: 400px; /* Moves to server position (Position 1) */
+}
+
+
+
+
+.volleyball {
+  width: 30px;
+  height: 30px;
+  font-size: 40px;
+  cursor: grab;
+}
+
+.kill-zone {
+  position: absolute;
+  top: -60px;
+  left: 35%;
+  width: 100px;
+  height: 40px;
+  background-color: green;
+  color: white;
+  text-align: center;
+  line-height: 40px;
+}
+
+.inplay-zone {
+  position: absolute;
+  top: -60px;
+  right: 35%;
+  width: 100px;
+  height: 40px;
+  background-color: blue;
+  color: white;
+  text-align: center;
+  line-height: 40px;
+}
+
 .error-zone {
-  width: 100%;
-  height: 50px;
+  width: 100px;
+  height: 200px;
   background-color: red;
   color: white;
-  font-size: 18px;
   text-align: center;
-  line-height: 50px;
-  margin-top: 10px;
-  cursor: pointer;
+  line-height: 40px;
+  position: absolute;
+  left: -120px;
 }
 

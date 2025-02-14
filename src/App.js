@@ -46,8 +46,9 @@ function App() {
   }, [savedTeams]);
 
 const updateActivePlayers = () => {
-  setActivePlayers(players.filter(player => player.active).slice(0, 6));
+  setActivePlayers([...players.filter(player => player.active).slice(0, 6)]);
 };
+
 
 
   const toggleCourtLock = () => {
@@ -111,6 +112,10 @@ const updateActivePlayers = () => {
       ]);
     }
   };
+  
+  	  useEffect(() => {
+        updateActivePlayers();
+         }, [players]); // ✅ Triggers every time players change
 
   return (
     <div className="container">
@@ -156,6 +161,9 @@ const updateActivePlayers = () => {
       />
 
       <PlayerManager players={players} setPlayers={setPlayers} updateActivePlayers={updateActivePlayers} />
+	  
+
+
 
       <PlayerSelector players={players} setActivePlayers={setActivePlayers} />
 

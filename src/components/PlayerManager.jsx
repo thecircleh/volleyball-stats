@@ -5,25 +5,25 @@ const PlayerManager = ({ players, setPlayers, updateActivePlayers }) => {
 
   const addPlayer = () => {
     if (newPlayerName.trim() === "") return;
+
     setPlayers(prev => [
       ...prev,
-      { id: prev.length + 1, name: newPlayerName, active: false }
+      { id: Date.now(), name: newPlayerName, active: false } // ✅ Guarantees unique IDs
     ]);
-    setNewPlayerName("");
+
+    setNewPlayerName(""); // ✅ Clears input after adding player
   };
 
-  const toggleActiveStatus = (playerId) => {
-    setPlayers(prev =>
-      prev.map(p =>
-        p.id === playerId ? { ...p, active: !p.active } : p
-      )
-    );
-    setTimeout(updateActivePlayers, 50); // ✅ Ensure update happens after state change
-  };
+  const toggleActiveStatus = (clickedPlayerId) => {
+    setPlayers(prevPlayers => {
+      const updatedPlayers = prevPlayers.map(player =>
+        player.id === clickedPlayerId ? { ...player, active: !player.active } : player
+      );
 
-  const removePlayer = (playerId) => {
-    setPlayers(prev => prev.filter(p => p.id !== playerId));
-    updateActivePlayers();
+      setTimeout(() => updateActivePlayers(updatedPlayers), 0); // ✅ Passes updatedPlayers to ensure immediate sync
+
+      return updatedPlayers;
+    });
   };
 
   return (
@@ -36,10 +36,13 @@ const PlayerManager = ({ players, setPlayers, updateActivePlayers }) => {
             <button onClick={() => toggleActiveStatus(player.id)}>
               {player.active ? "Deactivate" : "Activate"}
             </button>
-            <button onClick={() => removePlayer(player.id)}>Remove</button>
+            <button onClick={() => setPlayers(prev => prev.filter(p => p.id !== player.id))}>
+              Remove
+            </button>
           </li>
         ))}
       </ul>
+
       <input
         type="text"
         placeholder="New Player Name"
