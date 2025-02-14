@@ -25,8 +25,10 @@ const CourtView = ({ activePlayers, setActivePlayers, courtLocked, toggleCourtLo
       } else if (newLocation === "error") {
         newPos = { top: -150, left: "45%" }; // Moves ball to error zone
         onBallMove("error");
+      } else if (newLocation === "opponent-service") {
+      newPos = { top: -150, left: "45%" };  // ✅ New Opponent Service Zone
+      onBallMove("opponent-service");
       }
-
       console.log(`Ball moving to: ${newLocation}`, newPos); // Debugging log
       setBallPosition(newPos); // Apply new position
     } else {
@@ -56,6 +58,22 @@ const CourtView = ({ activePlayers, setActivePlayers, courtLocked, toggleCourtLo
               {(provided) => (
                 <div ref={provided.innerRef} className="kill-zone">
                   Kill
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+			<Droppable droppableId="opponent-service">
+              {(provided) => (
+                <div ref={provided.innerRef} className="opponent-service-zone">
+                  Opponent Service
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+            <Droppable droppableId="free-ball">
+              {(provided) => (
+                <div ref={provided.innerRef} className="free-ball-zone">
+                  Free Ball
                   {provided.placeholder}
                 </div>
               )}

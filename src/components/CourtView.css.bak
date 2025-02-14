@@ -83,7 +83,7 @@
   position: absolute;
   left: 10%;
   top: -30%;  /* Center the ball */
-  )
+  }
 
 .volleyball-in-play-zone {
   top: -70px; /* Ball in play zone */
@@ -148,3 +148,29 @@
   left: -120px;
 }
 
+.opponent-service-zone {
+  position: absolute;
+  top: -85px;
+  left: 45%;
+  width: 240px;
+  height: 40px;
+  background-color: white;
+  color: orange;
+  text-align: left;
+  font-weight: bold;
+  line-height: 40px;
+}
+
+.free-ball-zone {
+  position: absolute;
+  top: -0px;
+  left: 65%;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: purple;
+  color: white;
+  text-align: center;
+  line-height: 60px;
+  font-weight: bold;
+}
