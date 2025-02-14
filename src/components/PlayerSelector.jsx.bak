@@ -1,40 +1,33 @@
-import React from 'react';
+import React from "react";
 
-const PlayerSelector = ({ players, onSelect, multiSelect = false }) => {
+const PlayerSelector = ({ players = [], setActivePlayers }) => {
+  const handleSelection = (event) => {
+    const selectedPlayerId = parseInt(event.target.value);
+    setActivePlayers(prev => {
+      if (!prev.some(player => player.id === selectedPlayerId)) {
+        const selectedPlayer = players.find(p => p.id === selectedPlayerId);
+        return selectedPlayer ? [...prev, selectedPlayer] : prev;
+      }
+      return prev;
+    });
+  };
+
   return (
     <div>
-      <h3>Select Player{multiSelect ? "s" : ""}</h3>
-      
-      {multiSelect ? (
-        <div>
-          <label>Setter:</label>
-          <select onChange={(e) => onSelect("setter", e.target.value)}>
-            <option value="">-- Select Setter --</option>
-            {players.map((player) => (
-              <option key={player.id} value={player.id}>{player.name}</option>
-            ))}
-          </select>
-
-          <label>Attacker:</label>
-          <select onChange={(e) => onSelect("attacker", e.target.value)}>
-            <option value="">-- Select Attacker --</option>
-            {players.map((player) => (
-              <option key={player.id} value={player.id}>{player.name}</option>
-            ))}
-          </select>
-        </div>
-      ) : (
-        <select onChange={(e) => onSelect(e.target.value)}>
-          <option value="">-- Select Player --</option>
-          {players.map((player) => (
-            <option key={player.id} value={player.id}>{player.name}</option>
-          ))}
-        </select>
-      )}
+      <h3>Select Active Players</h3>
+      <select onChange={handleSelection}>
+        <option value="">-- Select Player --</option>
+        {players.map(player => (
+          <option key={player.id} value={player.id}>
+            {player.name}
+          </option>
+        ))}
+      </select>
     </div>
   );
 };
 
 export default PlayerSelector;
+
 
 

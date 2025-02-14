@@ -2,49 +2,58 @@ import React, { useState } from "react";
 
 const PlayerManager = ({ players, setPlayers, updateActivePlayers }) => {
   const [newPlayerName, setNewPlayerName] = useState("");
-  const [subPrompt, setSubPrompt] = useState(null);
 
   const addPlayer = () => {
     if (newPlayerName.trim() === "") return;
 
-    setPlayers(prev => [
-      ...prev,
-      { id: Date.now(), name: newPlayerName, active: false } // ✅ Guarantees unique IDs
-    ]);
+    const newPlayer = { id: Date.now(), name: newPlayerName, location: "bench" }; // ✅ Players start on the bench
+
+    setPlayers(prev => [...prev, newPlayer]);
+
+    console.log(`✅ Player Added: ID=${newPlayer.id}, Name=${newPlayer.name}, Location=Bench`);
 
     setNewPlayerName(""); // ✅ Clears input after adding player
   };
 
-  const toggleActiveStatus = (clickedPlayerId) => {
+  const movePlayer = (playerId, newLocation) => {
     setPlayers(prevPlayers => {
       const updatedPlayers = prevPlayers.map(player =>
-        player.id === clickedPlayerId ? { ...player, active: !player.active } : player
+        player.id === playerId ? { ...player, location: newLocation } : player
       );
 
-      // ✅ Ensure no more than 6 active players
-      if (updatedPlayers.filter(player => player.active).length > 6) {
-        setSubPrompt(clickedPlayerId);
-        return prevPlayers; // Prevent exceeding 6 active players
-      }
+      const movedPlayer = updatedPlayers.find(player => player.id === playerId);
+      console.log(`🔄 Player Moved: ID=${movedPlayer.id}, Name=${movedPlayer.name}, New Location=${newLocation}`);
+
+      updateActivePlayers(updatedPlayers);
 
       return updatedPlayers;
     });
-
-    setTimeout(updateActivePlayers, 0); // ✅ Ensures immediate update
   };
 
   return (
     <div>
       <h3>Manage Players</h3>
       <ul>
-        {players.map(player => (
+        {players.map((player, index) => (
           <li key={player.id}>
             {player.name}
-            <button onClick={() => toggleActiveStatus(player.id)}>
-              {player.active ? "Deactivate" : "Activate"}
+            <button onClick={() => movePlayer(player.id, player.location === "bench" ? "court" : "bench")}>
+              {player.location === "bench" ? "Move to Court" : "Move to Bench"}
             </button>
-            <button onClick={() => setPlayers(prev => prev.filter(p => p.id !== player.id))}>
+            <button onClick={() => {
+              console.log(`❌ Player Removed: ID=${player.id}, Name=${player.name}`);
+              setPlayers(prev => prev.filter(p => p.id !== player.id));
+            }}>
               Remove
+            </button>
+            <button onClick={() => {
+              const newName = prompt("Edit Player Name:", player.name);
+              if (newName && newName.trim() !== "") {
+                setPlayers(prev => prev.map(p => p.id === player.id ? { ...p, name: newName } : p));
+                console.log(`✏️ Player Edited: ID=${player.id}, New Name=${newName}`);
+              }
+            }}>
+              Edit
             </button>
           </li>
         ))}
@@ -62,6 +71,9 @@ const PlayerManager = ({ players, setPlayers, updateActivePlayers }) => {
 };
 
 export default PlayerManager;
+
+
+
 
 
 

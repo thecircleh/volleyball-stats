@@ -1,26 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { FaLock, FaLockOpen, FaVolleyballBall, FaRedo } from "react-icons/fa";
-import Scoreboard from "./Scoreboard"; // ✅ Import Scoreboard component
+import Scoreboard from "./Scoreboard";
 import "./CourtView.css";
 
-const CourtView = ({ activePlayers [], setActivePlayers, rotatePlayers, courtLocked, toggleCourtLock,  onBallMove,  allPlayers [] }) => {
+const CourtView = ({ activePlayers, setActivePlayers, rotatePlayers, courtLocked, toggleCourtLock, onBallMove, allPlayers }) => {
   const [scores, setScores] = useState({ home: 0, visitor: 0 });
   const [setsWon, setSetsWon] = useState({ home: 0, visitor: 0 });
   const [currentSet, setCurrentSet] = useState(1);
   const [homeTeam, setHomeTeam] = useState("");
   const [visitorTeam, setVisitorTeam] = useState("");
   const [ballPosition, setBallPosition] = useState({ top: -50, left: "50%" });
-  
-  
-  
-  const benchPlayers = allPlayers.filter(player => !activePlayers.includes(player));
 
   useEffect(() => {
     console.log("Ball moved to:", ballPosition);
   }, [ballPosition]);
 
- const onDragEnd = (result) => {
+  const benchPlayers = allPlayers.filter(player => !activePlayers.includes(player));
+
+  const onDragEnd = (result) => {
     if (!result.destination) return;
 
     if (result.draggableId.startsWith("player-")) {
@@ -71,46 +69,11 @@ const CourtView = ({ activePlayers [], setActivePlayers, rotatePlayers, courtLoc
           <div className="court-layout">
             {courtLocked && (
               <div className="court-zones">
-                <Droppable droppableId="kill">
-                  {(provided) => (
-                    <div ref={provided.innerRef} className="kill-zone">
-                      Kill
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-                <Droppable droppableId="opponent-service">
-                  {(provided) => (
-                    <div ref={provided.innerRef} className="opponent-service-zone">
-                      Opponent Service
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-                <Droppable droppableId="free-ball">
-                  {(provided) => (
-                    <div ref={provided.innerRef} className="free-ball-zone">
-                      Free Ball
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-				<Droppable droppableId="error">
-                  {(provided) => (
-                    <div ref={provided.innerRef} className="error-zone">
-                      Error
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-                <Droppable droppableId="in-play">
-                  {(provided) => (
-                    <div ref={provided.innerRef} className="inplay-zone">
-                      In Play
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
+                <Droppable droppableId="kill"><div className="kill-zone">Kill</div></Droppable>
+                <Droppable droppableId="opponent-service"><div className="opponent-service-zone">Opponent Service</div></Droppable>
+                <Droppable droppableId="free-ball"><div className="free-ball-zone">Free Ball</div></Droppable>
+                <Droppable droppableId="error"><div className="error-zone">Error</div></Droppable>
+                <Droppable droppableId="in-play"><div className="inplay-zone">In Play</div></Droppable>
               </div>
             )}
 
@@ -130,12 +93,10 @@ const CourtView = ({ activePlayers [], setActivePlayers, rotatePlayers, courtLoc
                             isDragDisabled={courtLocked}
                           >
                             {(provided) => (
-                              <div
-                                className="player-box"
+                              <div className="player-box"
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                              >
+                                {...provided.dragHandleProps}>
                                 {activePlayers[index].name}
                               </div>
                             )}
@@ -156,12 +117,10 @@ const CourtView = ({ activePlayers [], setActivePlayers, rotatePlayers, courtLoc
                             isDragDisabled={courtLocked}
                           >
                             {(provided) => (
-                              <div
-                                className={`player-box ${index + 3 === 5 ? "server" : ""}`}
+                              <div className={`player-box ${index + 3 === 5 ? "server" : ""}`}
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                              >
+                                {...provided.dragHandleProps}>
                                 {activePlayers[index + 3].name}
                               </div>
                             )}
@@ -182,12 +141,10 @@ const CourtView = ({ activePlayers [], setActivePlayers, rotatePlayers, courtLoc
                   style={{ position: "absolute", top: `${ballPosition.top}px`, left: ballPosition.left }}>
                   <Draggable draggableId="volleyball" index={0}>
                     {(provided) => (
-                      <div
-                        className="volleyball"
+                      <div className="volleyball"
                         ref={provided.innerRef}
                         {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
+                        {...provided.dragHandleProps}>
                         <FaVolleyballBall />
                       </div>
                     )}
@@ -197,9 +154,6 @@ const CourtView = ({ activePlayers [], setActivePlayers, rotatePlayers, courtLoc
             </Droppable>
           </div>
         </div>
-      
-      
-
 
         {/* ✅ Bench Section */}
         <Droppable droppableId="bench" direction="horizontal">
@@ -224,31 +178,19 @@ const CourtView = ({ activePlayers [], setActivePlayers, rotatePlayers, courtLoc
         </Droppable>
       </DragDropContext>
 
-	  	  <div className="court-controls">
-        <button onClick={toggleCourtLock} title="Lock/Unlock Court">
-          {courtLocked ? <FaLockOpen size={24} /> : <FaLock size={24} />}
-        </button>
-        <button onClick={rotatePlayers} title="Rotate Players">
-          <FaRedo size={24} />
-        </button>
+      <div className="court-controls">
+        <button onClick={toggleCourtLock}><FaLockOpen size={24} /></button>
+        <button onClick={rotatePlayers}><FaRedo size={24} /></button>
       </div>
-	  
-      {/* ✅ Scoreboard is now below the court */}
+
       <div className="scoreboard-container">
-        <Scoreboard
-          homeTeam={homeTeam}
-          visitorTeam={visitorTeam}
-          currentSet={currentSet}
-          setsWon={setsWon}
-          scores={scores}
-        />
+        <Scoreboard homeTeam={homeTeam} visitorTeam={visitorTeam} currentSet={currentSet} setsWon={setsWon} scores={scores} />
       </div>
-
-
     </div>
   );
 };
 
 export default CourtView;
+
 
 

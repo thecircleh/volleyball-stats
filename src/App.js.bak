@@ -46,8 +46,9 @@ function App() {
   }, [savedTeams]);
 
 const updateActivePlayers = () => {
-  setActivePlayers(players.filter(player => player.active).slice(0, 6));
+  setActivePlayers([...players.filter(player => player.active).slice(0, 6)]);
 };
+
 
 
   const toggleCourtLock = () => {
@@ -118,7 +119,7 @@ const updateActivePlayers = () => {
 
   return (
     <div className="container">
-      <h1>Volleyball Stat Logger</h1>
+      <h1>BETA: Volleyball Stat Logger</h1>
 
       <div className="team-management">
         <label>Team Name: </label>
@@ -140,12 +141,7 @@ const updateActivePlayers = () => {
         <button onClick={() => setCurrentSet(prev => prev + 1)}>Next Set</button>
       </div>
 
-      <div className="court-controls">
-        <button onClick={toggleCourtLock}>
-          {courtLocked ? "Unlock Court" : "Lock Court"}
-        </button>
-        <button onClick={rotatePlayers}>Rotate Players</button>
-      </div>
+
 
       <CourtView
         activePlayers={activePlayers}

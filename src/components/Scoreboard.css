@@ -1,0 +1,45 @@
+.scoreboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #222;
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
+}
+
+.team-names {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.vs {
+  color: #ddd;
+}
+
+.set-info {
+  margin-top: 10px;
+  font-size: 1.2rem;
+}
+
+.sets-won {
+  font-weight: bold;
+}
+
+.current-score {
+  display: flex;
+  justify-content: space-around;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.score {
+  width: 50%;
+  text-align: center;
+}

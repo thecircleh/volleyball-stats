@@ -1,13 +1,34 @@
+/* ---------------------- */
+/* 🔹 GENERAL LAYOUT */
+/* ---------------------- */
 .court-container {
   text-align: center;
-  margin-top: 60px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
 }
 
+.court-layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 90%;
+  max-width: 500px;
+}
+
+/* ---------------------- */
+/* 🔹 COURT STYLING */
+/* ---------------------- */
 .court {
   display: flex;
   flex-direction: column;
-  width: 360px;
-  height: 200px;
+  width: 300%;
+  max-width: 300px;
+  height: 120px;
   border: 1px solid black;
   margin: auto;
   background-color: #f4f4f4;
@@ -23,88 +44,51 @@
 }
 
 .player-box {
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
+  margin: 0px;
   background-color: lightblue;
-  border-radius: 50%;
+  border-radius: 10%;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   font-weight: bold;
   text-align: center;
-  user-select: none;
+  transition: background-color 0.2s ease-in-out;
 }
-
 .server {
-  background-color: yellow; /* Highlights the server */
+  background-color: yellow;
+  color: red;  /* Highlights the server */
 }
 
+/* ---------------------- */
+/* 🔹 NET & ZONES */
+/* ---------------------- */
 .net {
   position: absolute;
   top: 0%;
   left: 0;
   width: 100%;
-  height: 1px;
+  height: 3px;
   background-color: red;
   text-align: center;
   color: red;
   font-weight: bold;
 }
 
-
-
+/* Touch indicator */
 .touched {
   background-color: orange !important;
 }
 
-
-.court-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-}
-
-.court-layout {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0px;
-  position: relative;
-}
-
+/* ---------------------- */
+/* 🔹 VOLLEYBALL POSITIONING */
+/* ---------------------- */
 .volleyball-container {
   position: absolute;
-  left: 10%;
-  top: -30%;  /* Center the ball */
+  left: 50%;
+  top: -20%;
 }
-
-.volleyball-default {
-  position: absolute;
-  left: 10%;
-  top: -30%;  /* Center the ball */
-  }
-
-.volleyball-in-play-zone {
-  top: -70px; /* Ball in play zone */
-}
-
-.volleyball-kill-zone {
-  top: 0px;
-  right:30px; /* Ball in kill zone */
-}
-
-.volleyball-error {
-  left: 10px; /* Ball in error zone */
-  top: 300px;
-}
-
-.volleyball-server {
-  top: 400px; /* Moves to server position (Position 1) */
-}
-
-
-
 
 .volleyball {
   width: 30px;
@@ -113,10 +97,19 @@
   cursor: grab;
 }
 
+/* ✅ Keeps ball inside zones */
+.volleyball-in-play-zone { top: -70px; }
+.volleyball-kill-zone { top: 0px; right: 30px; }
+.volleyball-error { left: 10px; top: 300px; }
+.volleyball-server { top: 400px; }
+
+/* ---------------------- */
+/* 🔹 ZONE STYLING */
+/* ---------------------- */
 .kill-zone {
   position: absolute;
-  top: -60px;
-  left: 35%;
+  top: -50px;
+  left: -70%;
   width: 100px;
   height: 40px;
   background-color: green;
@@ -127,8 +120,8 @@
 
 .inplay-zone {
   position: absolute;
-  top: -60px;
-  right: 35%;
+  top: -50px;
+  right: -70%;
   width: 100px;
   height: 40px;
   background-color: blue;
@@ -139,24 +132,26 @@
 
 .error-zone {
   width: 100px;
-  height: 200px;
+  height: 120px;
   background-color: red;
   color: white;
   text-align: center;
   line-height: 40px;
   position: absolute;
-  left: -120px;
+  top: 0; 
+  left: -70%;
 }
 
 .opponent-service-zone {
   position: absolute;
-  top: -85px;
-  left: 45%;
-  width: 240px;
+  top: -90px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
   height: 40px;
   background-color: white;
   color: orange;
-  text-align: left;
+  text-align: center;
   font-weight: bold;
   line-height: 40px;
 }
@@ -164,13 +159,104 @@
 .free-ball-zone {
   position: absolute;
   top: -0px;
-  left: 65%;
-  width: 120px;
-  height: 120px;
+  right: -60%;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
-  background-color: purple;
-  color: white;
+  background-color: white;
+  border-color: purple;
+  color: purple;
   text-align: center;
   line-height: 60px;
+}
+
+/* ---------------------- */
+/* 🔹 SCOREBOARD */
+/* ---------------------- */
+.scoreboard-container {
+  position: relative;
+  margin-top: 20px;
+  width: 320px;
+  background-color: #222;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 1.2rem;
+  z-index: 10;
+}
+.court-controls {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 10px; /* ✅ Ensures proper spacing */
+}
+
+.court-controls button {
+  background-color: #222;
+  color: white;
+  border: none;
+  padding: 2px;
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.court-controls button:hover {
+  background-color: green;
+}
+
+
+/* .inactive-players-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 500px;
+  flex-wrap: wrap;
+}
+
+.inactive-player-box {
+  width: 80px;
+  height: 80px;
+  margin: 5px;
+  background-color: lightgray;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: bold;
+  text-align: center;
+  cursor: grab;
+} */
+
+.bench-player-box:active {
+  cursor: grabbing;
+}
+
+.bench-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+    border-style: dotted;
+  border-color: blue;
+  margin-top: 15px;
+  width: 320px;
+  height: 300px;
+}
+
+.bench-player-box {
+  background-color: white;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: grab;
 }
